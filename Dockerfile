@@ -28,4 +28,4 @@ RUN set -xe; \
         nasm \
 		libtool; \
     python -m venv /opt/.venv; \
-    /opt/.venv/bin/pip install --upgrade pip setuptools poetry
+    /opt/.venv/bin/pip install --upgrade pip setuptools poetry wheel
