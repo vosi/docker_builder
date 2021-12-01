@@ -1,24 +1,28 @@
 FROM krallin/ubuntu-tini as tini
 
-FROM node:14 as builder
-
-COPY --from=tini /usr/local/bin/tini /usr/local/bin/tini
-
+FROM debian:stretch as debbuilder
 RUN set -ex; \
-    chmod +x /usr/local/bin/tini; \
-    \
-    fetch_deps='gcc libc-dev curl'; \
     apt-get update; \
-    apt-get install -y --no-install-recommends $fetch_deps libc6 openssl ca-certificates; \
+    apt-get install -y --no-install-recommends gcc libc-dev curl libc6 openssl ca-certificates; \
     \
     curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
     \
-    gcc -Wall \
-    /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec; \
+    gcc -Wall /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec
+
+FROM node:14 as builder
+
+COPY --from=tini /usr/local/bin/tini /usr/local/bin/tini
+COPY --from=debbuilder /usr/local/bin/su-exec /usr/local/bin/su-exec
+
+RUN set -ex; \
+    \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libc6 openssl ca-certificates; \
+    \
     chown root:root /usr/local/bin/su-exec; \
     chmod 0755 /usr/local/bin/su-exec; \
-    rm /usr/local/bin/su-exec.c; \
     \
-    apt-get purge -y --auto-remove $fetch_deps; \
+    chown root:root /usr/local/bin/tini; \
+    chmod 0755 /usr/local/bin/tini; \
     \
     rm -rf /var/lib/apt/lists/*
