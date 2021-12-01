@@ -1,4 +1,0 @@
-FROM node:14 as builder
-RUN set -ex; \
-    apt update; \
-    apt install -y libc6 openssl ca-certificates

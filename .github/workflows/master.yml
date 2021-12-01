@@ -17,9 +17,9 @@ jobs:
   build-and-publish:
     name: Docker image build and publish
     strategy:
-      max-parallel: 3
+      max-parallel: 1
       matrix:
-        df: [py38, py39, node14]
+        df: [node14-slim, node14-builder, py38-alpine, py39-alpine]
     runs-on: ubuntu-latest
     steps:
       -
@@ -57,6 +57,6 @@ jobs:
           file: Dockerfile_${{ matrix.df }}
           push: true
           platforms: linux/amd64, linux/arm64, linux/arm/v7
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.df }}-alpine
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.df }}
           labels: ${{ steps.meta.outputs.labels }}
           no-cache: true
