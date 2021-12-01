@@ -1,0 +1,3 @@
+FROM node:14-alpine
+RUN set -ex; \
+    apk add --no-cache libc6-compat
