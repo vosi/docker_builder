@@ -7,11 +7,12 @@ COPY --from=tini /usr/local/bin/tini /usr/local/bin/tini
 RUN set -ex; \
     chmod +x /usr/local/bin/tini; \
     \
-    curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
-    \
-    fetch_deps='gcc libc-dev'; \
+    fetch_deps='gcc libc-dev curl'; \
     apt-get update; \
     apt-get install -y --no-install-recommends $fetch_deps libc6 openssl ca-certificates; \
+    \
+    curl -o /usr/local/bin/su-exec.c https://raw.githubusercontent.com/ncopa/su-exec/master/su-exec.c; \
+    \
     gcc -Wall \
     /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec; \
     chown root:root /usr/local/bin/su-exec; \
