@@ -1,3 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:14 as builder
 RUN set -ex; \
-    apk add --no-cache libc6-compat openssl ca-certificates
+    apt update; \
+    apt install -y libc6 openssl ca-certificates
