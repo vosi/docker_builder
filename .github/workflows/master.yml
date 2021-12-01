@@ -16,6 +16,10 @@ env:
 jobs:
   build-and-publish:
     name: Docker image build and publish
+    strategy:
+      max-parallel: 3
+      matrix:
+        df: [py38, py39, node14]
     runs-on: ubuntu-latest
     steps:
       -
@@ -47,33 +51,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       -
-        name: Build and push py38 to registry
+        name: Build and push ${{ matrix.df }} to registry
         uses: docker/build-push-action@v2
         with:
-          file: Dockerfile_py38
+          file: Dockerfile_${{ matrix.df }}
           push: true
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:3.8-alpine
-          labels: ${{ steps.meta.outputs.labels }}
-          no-cache: true
-
-      -
-        name: Build and push py39 to registry
-        uses: docker/build-push-action@v2
-        with:
-          file: Dockerfile_py39
-          push: true
-          platforms: linux/amd64 #,linux/arm64,linux/arm/v7
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:3.9-alpine
-          labels: ${{ steps.meta.outputs.labels }}
-          no-cache: true
-      -
-        name: Build and push node14 to registry
-        uses: docker/build-push-action@v2
-        with:
-          file: Dockerfile_node14
-          push: true
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:14-alpine
+          platforms: linux/amd64, linux/arm64, linux/arm/v7
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.df }}-alpine
           labels: ${{ steps.meta.outputs.labels }}
           no-cache: true
