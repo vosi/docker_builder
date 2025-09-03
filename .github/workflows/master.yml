@@ -15,7 +15,7 @@ jobs:
   build-and-publish:
     name: Docker image build and publish
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         df: [node22-slim, node22-builder, py313-alpine]
     runs-on: ubuntu-latest

@@ -10,7 +10,7 @@ RUN set -xe; \
 	zlib-dev \
 	linux-headers \
 	curl \
-	gnupg1 \
+	gnupg \
 	libxslt-dev \
 	libffi-dev \
 	openssl-dev \
