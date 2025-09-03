@@ -1,6 +1,6 @@
 FROM krallin/ubuntu-tini as tini
 
-FROM debian:stretch as debbuilder
+FROM debian:bookworm as debbuilder
 RUN set -ex; \
     apt-get update; \
     apt-get install -y --no-install-recommends gcc libc-dev curl libc6 openssl ca-certificates; \
