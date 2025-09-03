@@ -3,11 +3,9 @@ name: Continuous integration
 on:
   push:
     branches:
-      -
-        master
+      - master
     tags:
-      -
-        'v*'
+      - "v*"
 
 env:
   REGISTRY: ghcr.io
@@ -19,40 +17,36 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        df: [node14-slim, node14-builder, py38-alpine, py39-alpine]
+        df:
+          [node14-slim, node14-builder, py38-alpine, py39-alpine, py313-alpine]
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v5
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         with:
           image: tonistiigi/binfmt:latest
           platforms: arm64,arm
 
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      -
-        name: Login to Registry
-        uses: docker/login-action@v1
+      - name: Login to Registry
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      -
-        name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      -
-        name: Build and push ${{ matrix.df }} to registry
-        uses: docker/build-push-action@v2
+      - name: Build and push ${{ matrix.df }} to registry
+        uses: docker/build-push-action@v6
         with:
           file: Dockerfile_${{ matrix.df }}
           push: true
