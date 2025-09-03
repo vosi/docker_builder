@@ -9,7 +9,7 @@ RUN set -ex; \
     \
     gcc -Wall /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec
 
-FROM node:14 as builder
+FROM node:22 as builder
 
 COPY --from=tini /usr/local/bin/tini /usr/local/bin/tini
 COPY --from=debbuilder /usr/local/bin/su-exec /usr/local/bin/su-exec
