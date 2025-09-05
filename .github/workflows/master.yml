@@ -49,7 +49,7 @@ jobs:
         with:
           file: Dockerfile_${{ matrix.df }}
           push: true
-          platforms: linux/amd64, linux/arm64, linux/arm/v7
+          platforms: linux/amd64, linux/arm64
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.df }}
           labels: ${{ steps.meta.outputs.labels }}
           no-cache: true
