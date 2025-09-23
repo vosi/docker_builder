@@ -17,7 +17,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        df: [node22-slim, node22-builder, py39-alpine, py313-alpine]
+        df:
+          [node22-slim, node22-builder, py39-alpine, py311-alpine, py313-alpine]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
