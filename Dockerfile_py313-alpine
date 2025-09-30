@@ -29,4 +29,4 @@ RUN set -xe; \
 	libtool; \
 	python -m venv /opt/.venv; \
 	/opt/.venv/bin/pip install --upgrade pip setuptools wheel; \
-	/opt/.venv/bin/pip install --upgrade pdm
+	/opt/.venv/bin/pip install --upgrade pdm uv poetry
